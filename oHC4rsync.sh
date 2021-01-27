@@ -22,7 +22,7 @@
 # --- identity
 
 SCRIPTNAME=$0
-SCRIPTVERSION="1.0 rev. 051"
+SCRIPTVERSION="1.0 rev. 055"
 AUTHOR="..." # EDIT
 EMAILTO="...@gmail.com" # EDIT
 LOCALHOSTNAME=$(hostname)
@@ -158,7 +158,7 @@ fi
 # --- test link to remote server & get remote hostname
 
 OHC4USER="databackup" # EDIT
-OHC4SERVER="10.0.1.220" # EDIT
+OHC4SERVER="10.0.1.200" # EDIT
 OHC4PORT="2222" # EDIT
 OHC4REMOTEFILE="/files/oHC4.txt" # EDIT
 OHC4REMOTESOURCE="/files/data" # EDIT
@@ -209,11 +209,11 @@ OPTIONSRSYNC="--stats --recursive --times --verbose --links --perms --group --ow
 HEURE=$(f_date_heure)
 echo "" >> $LOG 2>&1
 echo "------------------------------------------------------------" >> $LOG 2>&1  
-echo "$HEURE - rsync from oHC4" >> $LOG 2>&1
+echo "$HEURE - rsync from $REMOTEHOSTNAME" >> $LOG 2>&1
 echo "$OHC4SERVER$OHC4REMOTESOURCE$SLASH to" >> $LOG 2>&1
 echo "$LOCALTARGET$SLASH" >> $LOG 2>&1
 echo "------------------------------------------------------------" >> $LOG 2>&1
-echo "$HEURE - $LOCALTARGET$SLASH to oFIRST, using rsync ..."
+echo "$HEURE - $OHC4SERVER$OHC4REMOTESOURCE$SLASH to $LOCALHOSTNAME, using rsync ..."
     
 rsync -e "ssh -p $OHC4PORT -i $SSHKEYID" --log-format="%t %i %n (%l bytes)" \
 $OPTIONSRSYNC \
@@ -260,6 +260,6 @@ cat $SNAPSHOTLOG >> $SNAPSHOTHISTORY
 # --- end
 
 HEURE=$(f_date_heure)
-echo "$HEURE - backup ended"
+echo "$HEURE - rsync ended"
 
 exit 0
