@@ -22,7 +22,7 @@
 # --- identity
 
 SCRIPTNAME=$0
-SCRIPTVERSION="1.0 rev. 055"
+SCRIPTVERSION="1.0 rev. 070"
 AUTHOR="..." # EDIT
 EMAILTO="...@gmail.com" # EDIT
 LOCALHOSTNAME=$(hostname)
@@ -59,9 +59,10 @@ LOG="oHC4rsync.log"
 HISTORY="oHC4rsynchistory.log"
 SNAPSHOTLOG="oHC4rsyncsnapshot.log"
 SNAPSHOTHISTORY="oHC4rsyncsnapshothistory.log"
-LOCALTARGET="/media/ofirsthd/oHC4rsync" # EDIT
-LOCALMODIFS="/media/ofirsthd/oHC4rsyncmodifs" # EDIT
-SNAPSHOTS="/media/ofirsthd/oHC4snapshots/" # EDIT
+LOCALFILE="/media/usbHD/yes.txt" # EDIT
+LOCALTARGET="/media/usbHD/oHC4rsync" # EDIT
+LOCALMODIFS="/media/usbHD/oHC4rsyncmodifs" # EDIT
+SNAPSHOTS="/media/usbHD/oHC4snapshots/" # EDIT
 SUJETOK="rsync OK"
 SUJETKO="$LOCALHOSTNAME rsync ERROR ERROR ERROR"
 EMAILFROM="...@gmail.com" # EDIT
@@ -78,6 +79,20 @@ if [[ "`pidof -x $(basename $0) -o %PPID`" ]] # check if we are the only local i
     exit 100
   else
     echo "$START - instance check OK"
+fi
+
+if [ ! -f "$LOCALFILE" ] # check if external USB HD works
+  then
+    HEURE=$(f_date_heure)
+    echo "$HEURE - external USB HD error"
+    EMAILSUBJECT="$LOCALHOSTNAME USB HD ERROR"
+    EMAILMESSAGE="Impossible de lire le fichier test sur le disque dur externe."
+    printf "$EMAILHEADER1$EMAILSUBJECT$EMAILHEADER2$EMAILMESSAGE" | msmtp $EMAILTO
+    exit 105
+  else
+    HEURE=$(f_date_heure)
+    echo 512 > /sys/block/sda/queue/max_sectors_kb # for external USB HD stability
+    echo "$HEURE - external USB HD check OK"
 fi
 
 if [ ! -f "$LOG" ] # check if log file doesn't exists
@@ -124,7 +139,7 @@ echo "" >> $LOG 2>&1
 
 # --- SSH key to use & exporting borg passphrase
 
-SSHKEYID="/root/.ssh/ssh_oFIRST_root_ed25519_key" # EDIT
+SSHKEYID="/root/.ssh/ssh_oC4_root_ed25519_key" # EDIT
 
 HEURE=$(f_date_heure)
 if [ ! -f "$SSHKEYID" ] # check if ssh key file doesn't exists
@@ -158,7 +173,7 @@ fi
 # --- test link to remote server & get remote hostname
 
 OHC4USER="databackup" # EDIT
-OHC4SERVER="10.0.1.200" # EDIT
+OHC4SERVER="10.0.1.235" # EDIT
 OHC4PORT="2222" # EDIT
 OHC4REMOTEFILE="/files/oHC4.txt" # EDIT
 OHC4REMOTESOURCE="/files/data" # EDIT
