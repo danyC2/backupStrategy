@@ -25,7 +25,7 @@
 # --- identity
 
 SCRIPTNAME=$0
-SCRIPTVERSION="1.0 rev. 051"
+SCRIPTVERSION="1.0 rev. 065"
 AUTHOR="..." # EDIT
 EMAILTO="...@gmail.com" # EDIT
 LOCALHOSTNAME=$(hostname)
@@ -100,7 +100,7 @@ echo "" >> $LOG 2>&1
 
 # --- SSH key to use & exporting borg passphrase
 
-SSHKEYID="/root/.ssh/ssh_oHC4_root_ed25519_key" # EDIT
+SSHKEYID="/root/.ssh/ssh_oC4_root_ed25519_key" # EDIT
 
 HEURE=$(f_date_heure)
 if [ ! -f "$SSHKEYID" ] # check if ssh key file doesn't exists
@@ -123,7 +123,7 @@ export BORG_PASSPHRASE # export $BORG_PASSPHRASE out of script, in child process
 # --- test connection to remote backup server & get remote hostname
 
 OHC4BACKUPUSER="root" # EDIT
-OHC4BACKUPSERVER="10.0.10.220" # EDIT
+OHC4BACKUPSERVER="10.0.10.236" # EDIT
 OHC4BACKUPPORT="2222" # EDIT
 OHC4BACKUPIPERFPORT="2223" # EDIT
 OHC4BACKUPREMOTEFILE="/files/oHC4backup.txt" # EDIT
@@ -157,7 +157,7 @@ echo ""
 echo "Menu"
 echo "1) I want to change working directory, please let me exit !"
 echo "2) List all existing archives in repository, I need the names !"
-echo "3) I want to extract the content of an entire archive, I know its name."
+echo "3) I want to extract the content of an archive, I know its name."
 echo ""
 read -p "What do you want to do now (1, 2 or 3) ? " CHOICE
 case $CHOICE in
@@ -179,7 +179,7 @@ case $CHOICE in
      echo "directories can be selected by passing a list of PATHs as arguments."
      echo "Example entire archive     : [type just ENTER]"
      echo "Example directory structure: files/data/documentation"
-     echo "Example with single fil    : files/data/videos/gag/fun_chat_robinet.mp4"
+     echo "Example with single file   : files/data/videos/gag/fun_chat_robinet.mp4"
      echo ""
      read -p "Enter PATH: " PATH2EXTRACT
      echo ""
